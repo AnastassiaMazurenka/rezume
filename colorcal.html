@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="corcalcstyle.css">
+    <title>Colorcal</title>
+  </head>
+  <body>
+    <div class="color-picker">
+      <div id="circle-color-picker"></div>
+      <div id="out-color"></div>
+      <div id="color-indicator"></div>
+    </div>
+    <div class="calculator">
+      <div class="rgb-calc">
+        <div class="first-row">
+          <p>R</p> <input type="range" id="red-range-value" min="0" max="255" step="1" oninput="showRGBVal(this.value, 'red-value')"><p id="red-value">0</p>
+        </div>
+        <div class="second-row">
+          <p>G</p> <input type="range" id="green-range-value" min="0" max="255" step="1" oninput="showRGBVal(this.value, 'green-value')"> <p id="green-value">0</p>
+        </div>
+        <div class="third-row">
+          <p>B</p> <input type="range" id="blue-range-value" min="0" max="255" step="1" oninput="showRGBVal(this.value, 'blue-value')"> <p id="blue-value">0</p>
+        </div>
+      </div>
+      <div class="cmy-calc">
+        <div class="first-row">
+          <p>C</p> <input type="range" id="cyan-range-value" min="0" max="255" step="1" oninput="showCMYVal(this.value, 'cyan-value')"> <p id="cyan-value">0</p>
+        </div>
+        <div class="second-row">
+          <p>M</p> <input type="range" id="magenta-range-value" min="0" max="255" step="1" oninput="showCMYVal(this.value, 'magenta-value')"><p id="magenta-value">0</p>
+        </div>
+        <div class="third-row">
+          <p>Y</p> <input type="range" id="yellow-range-value" min="0" max="255" step="1" oninput="showCMYVal(this.value, 'yellow-value')"><p id="yellow-value">0</p>
+        </div>
+      </div>
+      <div class="hsl-calc">
+        <div class="first-row">
+          <p>H</p> <input type="range" id="hue-range-value" min="0" max="360" step="1" oninput="showHSLVal(this.value, 'hue-value')"> <p id="hue-value">0</p>
+        </div>
+        <div class="second-row">
+          <p>S</p> <input type="range" id="saturation-range-value" min="0" max="100" step="1" oninput="showHSLVal(this.value, 'saturation-value')"><p id="saturation-value">0</p>
+        </div>
+        <div class="third-row">
+          <p>L</p> <input type="range" id="lightness-range-value" min="0" max="100" step="1" oninput="showHSLVal(this.value, 'lightness-value')"><p id="lightness-value">0</p>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
+    <script>
+        let h = 0;
+        let s = 0;
+        let l = 0;
+        let r = 0;
+        let g = 0;
+        let b = 0;   
+
+      const RGBToHSL = function (r,g,b) {
+        r = +r;
+        g = +g;
+        b = +b;
+        r = r / 255;
+        g = g / 255;
+        b = b / 255;
+
+        let cmin = Math.min(r,g,b),
+            cmax = Math.max(r,g,b),
+            delta = cmax - cmin;
+
+        if (delta == 0) {
+          h = 0;
+        }
+        else if (cmax == r) {
+          h = ((g - b) / delta) % 6;
+        }
+        else if (cmax == g) {
+          h = (b - r) / delta + 2;
+        }
+        else {
+          h = (r - g) / delta + 4;
+        }
+        h = +Math.round(h * 60);
+          
+        if (h < 0) {
+            h += 360;
+        }
+        l = (cmax + cmin) / 2;
+
+        if(delta == 0) {
+          s = 0;
+        }
+        else {
+          s = delta / (1 - Math.abs(2 * l - 1));
+        }
+        s = +(s * 100).toFixed(0);
+        l = +(l * 100).toFixed(0);
+
+        return null;
+      }
+
+      const HSLtoRGB = function(h,s,l) {
+        let red=0, green=0, blue=0;
+        h = +h;
+        s = +s/100;
+        l = +l/100;
+
+        let c = (1 - Math.abs(2 * l - 1)) * s,
+        x = c * (1 - Math.abs((h / 60) % 2 - 1)),
+        m = l - c/2;
+
+        if (0 <= h && h < 60) {
+          red = c; green = x; blue = 0;  
+        } else if (60 <= h && h < 120) {
+          red = x; green = c; blue = 0;
+        } else if (120 <= h && h < 180) {
+          red = 0; green = c; blue = x;
+        } else if (180 <= h && h < 240) {
+          red = 0; green = x; blue = c;
+        } else if (240 <= h && h < 300) {
+          red = x; green = 0; blue = c;
+        } else if (300 <= h && h < 360) {
+          red = c; green = 0; blue = x;
+        }
+        r = Math.round((red + m) * 255);
+        g = Math.round((green + m) * 255);
+        b = Math.round((blue + m) * 255);
+        return null;
+      }
+      
+      const redrangevalue = document.getElementById('red-range-value');
+      const greenrangevalue = document.getElementById('green-range-value');
+      const bluerangevalue = document.getElementById('blue-range-value');
+      const cyanrangevalue = document.getElementById('cyan-range-value');
+      const magentarangevalue = document.getElementById('magenta-range-value');
+      const yellowrangevalue = document.getElementById('yellow-range-value');
+      const huerangevalue = document.getElementById('hue-range-value');
+      const saturationrangevalue = document.getElementById('saturation-range-value');
+      const lightnessrangevalue = document.getElementById('lightness-range-value');
+      const colorIndicator = document.getElementById('color-indicator');
+      const colorPicker = new iro.ColorPicker('#out-color', {
+        width: 180,
+        color: "#fff"
+      });
+      colorPicker.on('color:change', function(color) {
+        colorIndicator.style.backgroundColor = color.hexString;
+
+        redrangevalue.value = color.rgba.r;
+        const redvalue = document.getElementById('red-value').innerHTML = color.rgba.r;
+        greenrangevalue.value = color.rgba.g;
+        const greenvalue = document.getElementById('green-value').innerHTML = color.rgba.g;
+        bluerangevalue.value = color.rgba.b;
+        const bluevalue = document.getElementById('blue-value').innerHTML = color.rgba.b;
+
+        cyanrangevalue.value = 255 - color.rgba.r;
+        const cyanvalue = document.getElementById('cyan-value').innerHTML = 255 - color.rgba.r;
+        magentarangevalue.value = 255 - color.rgba.g;
+        const magentavalue = document.getElementById('magenta-value').innerHTML = 255 - color.rgba.g;
+        yellowrangevalue.value = 255 - color.rgba.b;
+        const yellowvalue = document.getElementById('yellow-value').innerHTML = 255 - color.rgba.b;
+
+        RGBToHSL(color.rgba.r,color.rgba.g,color.rgba.b);
+
+        huerangevalue.value = h;
+        const huevalue = document.getElementById('hue-value').innerHTML = h;
+        saturationrangevalue.value = s;
+        const saturationvalue = document.getElementById('saturation-value').innerHTML = s;
+        lightnessrangevalue.value = l;
+        const lightnessvalue = document.getElementById('lightness-value').innerHTML = l;
+      });
+
+      let showRGBVal = function(newVal, id) {
+        document.getElementById(id).innerHTML = newVal;
+
+        const red = document.getElementById('red-value').innerHTML || '0';
+        const green = document.getElementById('green-value').innerHTML || '0';
+        const blue = document.getElementById('blue-value').innerHTML || '0';
+
+        redrangevalue.style.background = 'linear-gradient(to left, rgb('+ 0 +', '+ green +', '+ blue +'), rgb('+ 255 +', '+ green +', '+ blue +'))';
+        greenrangevalue.style.background = 'linear-gradient(to left, rgb('+ red +', '+ 0 +', '+ blue +'), rgb('+ red +', '+ 255 +', '+ blue +'))';
+        bluerangevalue.style.background = 'linear-gradient(to left, rgb('+ red +', '+ green +', '+ 0 +'), rgb('+ red +', '+ green +', '+ 255 +'))';
+
+        const cyan = 255 - parseInt(red);
+        const magenta = 255 - parseInt(green);
+        const yellow = 255 - parseInt(blue);
+
+        document.getElementById('cyan-range-value').value = cyan;
+        document.getElementById('cyan-value').innerHTML = cyan;
+        document.getElementById('magenta-range-value').value = magenta;
+        document.getElementById('magenta-value').innerHTML = magenta;
+        document.getElementById('yellow-range-value').value = yellow;
+        document.getElementById('yellow-value').innerHTML = yellow;
+
+        cyanrangevalue.style.background = 'linear-gradient(to left, rgb('+ 0 +', '+ magenta +', '+ yellow +'), rgb('+ 255 +', '+ magenta +', '+ yellow +'))';
+        magentarangevalue.style.background = 'linear-gradient(to left, rgb('+ cyan +', '+ 0 +', '+ yellow +'), rgb('+ cyan +', '+ 255 +', '+ yellow +'))';
+        yellowrangevalue.style.background = 'linear-gradient(to left, rgb('+ cyan +', '+ magenta +', '+ 0 +'), rgb('+ cyan +', '+ magenta +', '+ 255 +'))';
+
+        RGBToHSL(red,green,blue);
+
+        document.getElementById('hue-range-value').value = h;
+        document.getElementById('hue-value').innerHTML = h;
+        document.getElementById('saturation-range-value').value = s;
+        document.getElementById('saturation-value').innerHTML = s;
+        document.getElementById('lightness-range-value').value = l;
+        document.getElementById('lightness-value').innerHTML = l;
+
+        huerangevalue.style.background = 'linear-gradient(to left, hsl('+ 0 +'deg, '+ s +'%, '+ l +'%), hsl('+ 360 +'deg, '+ s +'%, '+ l +'%))';
+        saturationrangevalue.style.background = 'linear-gradient(to left, hsl('+ h +'deg, '+ 0 +'%, '+ l +'%), hsl('+ h +'deg, '+ 100 +'%, '+ l +'%))';
+        lightnessrangevalue.style.background = 'linear-gradient(to left, hsl('+ h +'deg, '+ s +'%, '+ 0 +'%), hsl('+ h +'deg, '+ s +'%, '+ 100 +'%))';
+
+        colorIndicator.style.backgroundColor = 'rgb('+ red +', '+ green +', '+ blue +')';
+      }
+
+      let showCMYVal = function(newVal, id) {
+        document.getElementById(id).innerHTML = newVal;
+
+        const cyan = document.getElementById('cyan-value').innerHTML || '0';
+        const magenta = document.getElementById('magenta-value').innerHTML || '0';
+        const yellow = document.getElementById('yellow-value').innerHTML || '0';
+
+        cyanrangevalue.style.background = 'linear-gradient(to left, rgb('+ 0 +', '+ magenta +', '+ yellow +'), rgb('+ 255 +', '+ magenta +', '+ yellow +'))';
+        magentarangevalue.style.background = 'linear-gradient(to left, rgb('+ cyan +', '+ 0 +', '+ yellow +'), rgb('+ cyan +', '+ 255 +', '+ yellow +'))';
+        yellowrangevalue.style.background = 'linear-gradient(to left, rgb('+ cyan +', '+ magenta +', '+ 0 +'), rgb('+ cyan +', '+ magenta +', '+ 255 +'))';
+
+        const red = 255 - parseInt(cyan);
+        const green = 255 - parseInt(magenta);
+        const blue = 255 - parseInt(yellow);
+
+        redrangevalue.style.background = 'linear-gradient(to left, rgb('+ 0 +', '+ green +', '+ blue +'), rgb('+ 255 +', '+ green +', '+ blue +'))';
+        greenrangevalue.style.background = 'linear-gradient(to left, rgb('+ red +', '+ 0 +', '+ blue +'), rgb('+ red +', '+ 255 +', '+ blue +'))';
+        bluerangevalue.style.background = 'linear-gradient(to left, rgb('+ red +', '+ green +', '+ 0 +'), rgb('+ red +', '+ green +', '+ 255 +'))';
+
+        document.getElementById('red-range-value').value = red;
+        document.getElementById('red-value').innerHTML = red;
+        document.getElementById('green-range-value').value = green;
+        document.getElementById('green-value').innerHTML = green;
+        document.getElementById('blue-range-value').value = blue;
+        document.getElementById('blue-value').innerHTML = blue;
+
+        RGBToHSL(red,green,blue);
+        document.getElementById('hue-range-value').value = h;
+        document.getElementById('hue-value').innerHTML = h;
+        document.getElementById('saturation-range-value').value = s;
+        document.getElementById('saturation-value').innerHTML = magenta;
+        document.getElementById('lightness-range-value').value = l;
+        document.getElementById('lightness-value').innerHTML = l;
+
+        huerangevalue.style.background = 'linear-gradient(to left, hsl('+ 0 +'deg, '+ s +'%, '+ l +'%), hsl('+ 360 +'deg, '+ s +'%, '+ l +'%))';
+        saturationrangevalue.style.background = 'linear-gradient(to left, hsl('+ h +'deg, '+ 0 +'%, '+ l +'%), hsl('+ h +'deg, '+ 100 +'%, '+ l +'%))';
+        lightnessrangevalue.style.background = 'linear-gradient(to left, hsl('+ h +'deg, '+ s +'%, '+ 0 +'%), hsl('+ h +'deg, '+ s +'%, '+ 100 +'%))';
+
+        colorIndicator.style.backgroundColor = 'rgb('+ red +', '+ green +', '+ blue +')';
+
+      }
+
+      let showHSLVal = function(newVal, id) {
+        document.getElementById(id).innerHTML = newVal;
+
+        const hue = document.getElementById('hue-value').innerHTML || '0';
+        const saturation = document.getElementById('saturation-value').innerHTML || '0';
+        const lightness = document.getElementById('lightness-value').innerHTML || '0';
+
+        huerangevalue.style.background = 'linear-gradient(to left, hsl('+ 0 +'deg, '+ saturation +'%, '+ lightness +'%), hsl('+ 360 +'deg, '+ saturation +'%, '+ lightness +'%))';
+        saturationrangevalue.style.background = 'linear-gradient(to left, hsl('+ hue +'deg, '+ 0 +'%, '+ lightness +'%), hsl('+ hue +'deg, '+ 100 +'%, '+ lightness +'%))';
+        lightnessrangevalue.style.background = 'linear-gradient(to left, hsl('+ hue +'deg, '+ saturation +'%, '+ 0 +'%), hsl('+ hue +'deg, '+ saturation +'%, '+ 100 +'%))';
+
+        HSLtoRGB(huerangevalue.value,saturationrangevalue.value,lightnessrangevalue.value);
+
+        document.getElementById('red-range-value').value = r
+        document.getElementById('red-value').innerHTML = r;
+        document.getElementById('green-range-value').value = g;;
+        document.getElementById('green-value').innerHTML = g;
+        document.getElementById('blue-range-value').value = b;
+        document.getElementById('blue-value').innerHTML = b;
+
+        redrangevalue.style.background = 'linear-gradient(to left, rgb('+ 0 +', '+ g +', '+ b +'), rgb('+ 255 +', '+ g +', '+ b +'))';
+        greenrangevalue.style.background = 'linear-gradient(to left, rgb('+ r +', '+ 0 +', '+ b +'), rgb('+ r +', '+ 255 +', '+ b +'))';
+        bluerangevalue.style.background = 'linear-gradient(to left, rgb('+ r +', '+ g +', '+ 0 +'), rgb('+ r +', '+ g +', '+ 255 +'))';
+
+
+        const cyan = 255 - parseInt(r);
+        const magenta = 255 - parseInt(g);
+        const yellow = 255 - parseInt(b);
+
+        document.getElementById('cyan-range-value').value = cyan;
+        document.getElementById('cyan-value').innerHTML = cyan;
+        document.getElementById('magenta-range-value').value = magenta;
+        document.getElementById('magenta-value').innerHTML = magenta;
+        document.getElementById('yellow-range-value').value = yellow;
+        document.getElementById('yellow-value').innerHTML = yellow;
+
+        cyanrangevalue.style.background = 'linear-gradient(to left, rgb('+ 0 +', '+ magenta +', '+ yellow +'), rgb('+ 255 +', '+ magenta +', '+ yellow +'))';
+        magentarangevalue.style.background = 'linear-gradient(to left, rgb('+ cyan +', '+ 0 +', '+ yellow +'), rgb('+ cyan +', '+ 255 +', '+ yellow +'))';
+        yellowrangevalue.style.background = 'linear-gradient(to left, rgb('+ cyan +', '+ magenta +', '+ 0 +'), rgb('+ cyan +', '+ magenta +', '+ 255 +'))';
+
+        colorIndicator.style.backgroundColor = 'hsl('+ hue +'deg, '+ saturation +'%, '+ lightness +'%)';
+      }
+
+
+    </script>
+  </body>
+</html>     
