@@ -133,6 +133,12 @@ font-family: 'Times New Roman', Times, serif;
 color: rgb(0, 0, 0);
 }
 /*основной текст*/
+h4{
+    color: #000000;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 470;
+
+}
 h3{
     /* font-style:serif; */
     /* font-style:  Neue Montreal; */
