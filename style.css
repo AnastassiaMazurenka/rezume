@@ -64,13 +64,6 @@ display:grid;
     row-gap: 1em;
     
 } 
-/* .div.divtwo>div.end{
-    padding: 2.5em;
-    background-color: rgb(255, 255,255 );/*был красный*/
-   /* row-gap: 1em;
-    justify-self: end;
-    
-}  */
 
 /*попытка вправо подвинуть текст*/
 .end{
@@ -87,7 +80,6 @@ display:grid;
 
 }
 .names{
-    /* background-color:  rgb(179, 105, 105); */
     font-size: 3vw;
     font-weight: bold;
 }
@@ -101,9 +93,6 @@ display:grid;
 .img{
     width: 20vw;
      margin: 0; 
-    /* border: 5px solid #E5BF23; */
-    /* background: white; */
-    /* font-size: 55vw; */
 
 }
 /*ТЕНЬ СРЕДНЕГО БЛОКА*/
@@ -123,13 +112,10 @@ color: rgb(0, 0, 0);
 /*надпись About me*/
 h2{
 text-decoration:underline;
-/* font-size: 30px;
-font-weight: 600; */
+
 font-family: 'Times New Roman', Times, serif;
 
-/* text-transform: inherit; */
 
-/* font-style:  Neue Montreal; */
 color: rgb(0, 0, 0);
 }
 /*основной текст*/
@@ -140,39 +126,21 @@ h4{
 
 }
 h3{
-    /* font-style:serif; */
-    /* font-style:  Neue Montreal; */
-    /* font-size: 18px;
-font-weight: 540; */
+    
 color: #000000;
-/* text-transform: uppercase; */
 font-family: 'Times New Roman', Times, serif;
-    /* font-family: Georgia, serif;
-font-size: 20px;
-color: rgb(0, 0, 0); */
+
 }
-/* .block1 {
 
-width: 500px;
-background: rgb(153, 102, 102);
-padding: 5px;
-padding-right: 20px;
-float: left;
-border: 2px solid black;
-
-} */
 .conteiner{
 display: grid;
-/*height: 150px;*/
 grid-template-rows: 50px 50px 50px;
 background: rgb(513, 102, 102);
 border: 2px solid black;
-/* ! */
 row-gap:  50px;
 }
 .conteiner>div{
 background: rgb(153, 102, 102);
-/* border: 2px solid black;*/
 height: 1em; 
 
 } 
