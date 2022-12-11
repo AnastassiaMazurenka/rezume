@@ -1,0 +1,240 @@
+body{
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+.first{
+display:grid;
+
+
+    grid-template-columns: 1fr;
+    background-color: rgb(255, 255, 255);
+    grid-template-rows: 3em;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+.wrapper{
+    display:grid;
+    grid-template-columns: 10% 80% 10%;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+/*права лево колонки*/
+.wrapper>div{
+    padding: 5em;
+    background-color: rgb(255, 255, 255);
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+.wrapper>div.center{
+    padding: 5em;
+    background-color: rgb(255, 255, 255);
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
+    
+
+}
+
+.photo{
+    display:grid;
+    grid-template-columns: 50% 50%;
+    background-color: rgb(255, 255, 255);/*был розовый*/
+    column-gap: 1em;
+ 
+    
+}
+ .photo>div{
+    padding: 2.5em;
+    background-color: rgb(153, 102, 102);/*был красный*/
+    row-gap: 1em;
+    
+} 
+.photo>div.divtwo{
+    padding: 2.5em;
+    background-color: rgb(255, 255,255 );/*был красный*/
+    row-gap: 1em;
+    
+} 
+/* .div.divtwo>div.end{
+    padding: 2.5em;
+    background-color: rgb(255, 255,255 );/*был красный*/
+   /* row-gap: 1em;
+    justify-self: end;
+    
+}  */
+
+/*попытка вправо подвинуть текст*/
+.end{
+    display: grid;
+    justify-self: end;
+    background-color: rgb(255, 255, 255);;
+}
+.photo>div.names{
+    background-color:  rgb(168, 48, 48);
+    grid-template-columns: 5fr;
+    grid-template-rows: 5fr;
+
+    
+
+}
+.names{
+    /* background-color:  rgb(179, 105, 105); */
+    font-size: 3vw;
+    font-weight: bold;
+}
+/**/
+.photo>div.aboutme{
+    padding: 2.5em;
+    background-color: rgb(94, 157, 30);
+    row-gap: 1em;
+}
+/*фото*/
+.img{
+    width: 20vw;
+     margin: 0; 
+    /* border: 5px solid #E5BF23; */
+    /* background: white; */
+    /* font-size: 55vw; */
+
+}
+/*ТЕНЬ СРЕДНЕГО БЛОКА*/
+blockquote {
+   
+background:  rgb(0, 0, 0);/* Цвет фона */
+box-shadow: 0 0 50px rgb(0, 0, 0); /* Параметры тени */
+/* padding: 5px; */
+}
+/*ANASTASSIA MAZURENKA*/
+h1{
+text-decoration:underline;
+color: rgb(0, 0, 0);
+font-size: 40px;
+}
+/*надпись About me*/
+h2{
+text-decoration:underline;
+font-size: 30px;
+color: rgb(0, 0, 0);
+}
+/*основной текст*/
+h3{
+
+font-size: 20px;
+color: rgb(0, 0, 0);
+}
+/* .block1 {
+
+width: 500px;
+background: rgb(153, 102, 102);
+padding: 5px;
+padding-right: 20px;
+float: left;
+border: 2px solid black;
+
+} */
+.conteiner{
+display: grid;
+/*height: 150px;*/
+grid-template-rows: 50px 50px 50px;
+background: rgb(513, 102, 102);
+border: 2px solid black;
+/* ! */
+row-gap:  50px;
+}
+.conteiner>div{
+background: rgb(153, 102, 102);
+/* border: 2px solid black;*/
+height: 1em; 
+
+} 
+
+
+.skills {
+width: 100%;
+max-width: 600px;
+padding: 0 20px;
+}
+
+.skill-name {
+font-size: 18px;
+font-weight: 700;
+color: #000000;
+text-transform: uppercase;
+margin: 20px 0;
+}
+
+.skill-bar {
+height: 14px;
+background: #202020;
+border-radius: 3px;
+}
+
+.skill-per {
+height: 14px;
+background: rgb(153, 102, 102);
+border-radius: 3px;
+position: relative;
+animation: fillBars 2.5s 1;
+}
+
+.skill-per::before {
+content: attr(per);
+position: absolute;
+padding: 4px 6px;
+background: #f1f1f1;
+border-radius: 4px;
+font-size: 12px;
+top: -35px;
+right: 0;
+transform: translateX(50%);
+}
+
+.skill-per::after {
+content: "";
+position: absolute;
+width: 7px;
+height: 7px;
+background: #f1f1f1;
+top: -18px;
+right: 0;
+transform: translateX(50%) rotate(45deg);
+border-radius: 1px;
+}
+/* .box1{
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+
+} */
+.box1 {
+    display: grid;
+    grid-template-columns: 200px;
+    grid-auto-columns: 350px;
+    grid-template-rows: 100px;
+    grid-auto-rows: 100px;
+  }
+  .box2 { grid-column: 1; grid-row: 1; }
+  .box3 { grid-column: 2; grid-row: 1; }
+  .box4 { grid-column: 1; grid-row: 2; }
+  .box5 { grid-column: 2; grid-row: 2; }
+@keyframes fillBars {
+from {
+width: 0;
+}
+
+to {
+width: 100%;
+}
+}
+A {
+    text-decoration: none; /* Убирает подчеркивание для ссылок */
+    color: black;
+   }
